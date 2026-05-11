@@ -10,8 +10,13 @@ use serde_json::Value;
 
 use crate::error::Error;
 use crate::resources::{
-    audiences::Audiences, campaigns::Campaigns, contacts::Contacts, domains::Domains,
-    emails::Emails, templates::Templates, webhooks::Webhooks,
+    analytics::Analytics, api_keys::ApiKeys, audiences::Audiences, automations::Automations,
+    billing::Billing, campaigns::Campaigns, contacts::Contacts, dedicated_ips::DedicatedIps,
+    deliverability::Deliverability, domains::Domains, emails::Emails, events::Events,
+    inbound::Inbound, notification_preferences::NotificationPreferencesResource,
+    organizations::Organizations, regions::Regions, status::Status, suppression::Suppression,
+    team::Team, templates::Templates, test_emails::TestEmails, unsubscribes::Unsubscribes,
+    webhooks::Webhooks,
 };
 use crate::VERSION;
 
@@ -162,6 +167,102 @@ impl Sendry {
     #[must_use]
     pub fn webhooks(&self) -> Webhooks {
         Webhooks::new(self.clone())
+    }
+
+    /// API keys resource.
+    #[must_use]
+    pub fn api_keys(&self) -> ApiKeys {
+        ApiKeys::new(self.clone())
+    }
+
+    /// Analytics resource.
+    #[must_use]
+    pub fn analytics(&self) -> Analytics {
+        Analytics::new(self.clone())
+    }
+
+    /// Suppression list resource.
+    #[must_use]
+    pub fn suppression(&self) -> Suppression {
+        Suppression::new(self.clone())
+    }
+
+    /// Unsubscribes resource.
+    #[must_use]
+    pub fn unsubscribes(&self) -> Unsubscribes {
+        Unsubscribes::new(self.clone())
+    }
+
+    /// Billing resource.
+    #[must_use]
+    pub fn billing(&self) -> Billing {
+        Billing::new(self.clone())
+    }
+
+    /// Team resource.
+    #[must_use]
+    pub fn team(&self) -> Team {
+        Team::new(self.clone())
+    }
+
+    /// Dedicated IPs resource.
+    #[must_use]
+    pub fn dedicated_ips(&self) -> DedicatedIps {
+        DedicatedIps::new(self.clone())
+    }
+
+    /// Deliverability resource.
+    #[must_use]
+    pub fn deliverability(&self) -> Deliverability {
+        Deliverability::new(self.clone())
+    }
+
+    /// Inbound resource.
+    #[must_use]
+    pub fn inbound(&self) -> Inbound {
+        Inbound::new(self.clone())
+    }
+
+    /// Notification preferences resource.
+    #[must_use]
+    pub fn notification_preferences(&self) -> NotificationPreferencesResource {
+        NotificationPreferencesResource::new(self.clone())
+    }
+
+    /// Organizations resource.
+    #[must_use]
+    pub fn organizations(&self) -> Organizations {
+        Organizations::new(self.clone())
+    }
+
+    /// Regions resource.
+    #[must_use]
+    pub fn regions(&self) -> Regions {
+        Regions::new(self.clone())
+    }
+
+    /// Status resource.
+    #[must_use]
+    pub fn status(&self) -> Status {
+        Status::new(self.clone())
+    }
+
+    /// Test emails resource.
+    #[must_use]
+    pub fn test_emails(&self) -> TestEmails {
+        TestEmails::new(self.clone())
+    }
+
+    /// Automations resource.
+    #[must_use]
+    pub fn automations(&self) -> Automations {
+        Automations::new(self.clone())
+    }
+
+    /// Events resource.
+    #[must_use]
+    pub fn events(&self) -> Events {
+        Events::new(self.clone())
     }
 
     // ──────────────────────────────────────────────────────────────────

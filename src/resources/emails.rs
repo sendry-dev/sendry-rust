@@ -53,6 +53,79 @@ impl Emails {
             .request(self.client.build::<()>(Method::GET, "/v1/emails", &q, None))
             .await
     }
+
+    /// Send a marketing email with mandatory unsubscribe support.
+    pub async fn send_marketing(
+        &self,
+        params: SendMarketingEmail,
+    ) -> Result<EmailResponse, Error> {
+        self.client
+            .request(self.client.build(
+                Method::POST,
+                "/v1/emails/marketing",
+                &[],
+                Some(&params),
+            ))
+            .await
+    }
+
+    /// Cancel a queued email (only works if not yet sent).
+    pub async fn cancel(&self, id: &str) -> Result<CancelEmailResponse, Error> {
+        self.client
+            .request(self.client.build::<()>(
+                Method::POST,
+                &format!("/v1/emails/{id}/cancel"),
+                &[],
+                None,
+            ))
+            .await
+    }
+}
+
+/// Parameters for [`Emails::send_marketing`].
+#[derive(Debug, Clone, Default, Serialize)]
+pub struct SendMarketingEmail {
+    /// Verified sender.
+    pub from: String,
+    /// Recipients (single or many).
+    pub to: Vec<String>,
+    /// Subject.
+    pub subject: String,
+    /// HTML body.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub html: Option<String>,
+    /// Plain-text body.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
+    /// Reply-to.
+    #[serde(skip_serializing_if = "Option::is_none", rename = "reply_to")]
+    pub reply_to: Option<String>,
+    /// Custom headers.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub headers: Option<serde_json::Value>,
+    /// SES tags.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<Tag>>,
+    /// Required unsubscribe URL.
+    pub unsubscribe_url: String,
+    /// Optional list id.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub list_id: Option<String>,
+    /// ISO datetime to delay sending.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scheduled_at: Option<String>,
+    /// Template id.
+    #[serde(skip_serializing_if = "Option::is_none", rename = "template_id")]
+    pub template_id: Option<String>,
+}
+
+/// Response from [`Emails::cancel`].
+#[derive(Debug, Clone, Deserialize)]
+pub struct CancelEmailResponse {
+    /// Email id.
+    pub id: String,
+    /// Always `cancelled`.
+    pub status: String,
 }
 
 /// Parameters for [`Emails::send`].
