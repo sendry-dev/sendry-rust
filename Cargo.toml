@@ -1,0 +1,45 @@
+[package]
+name = "sendry"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+authors = ["Sendry <support@sendry.online>"]
+description = "Official Rust crate for the Sendry email API"
+documentation = "https://docs.sendry.online/sdks/rust"
+homepage = "https://sendry.online"
+repository = "https://github.com/sendry-dev/sendry-rust"
+license = "MIT"
+readme = "README.md"
+keywords = ["email", "sendry", "transactional", "api", "sdk"]
+categories = ["api-bindings", "email"]
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+]
+
+[features]
+default = ["native-tls"]
+native-tls = ["reqwest/native-tls"]
+rustls = ["reqwest/rustls-tls"]
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+hmac = "0.12"
+sha2 = "0.10"
+subtle = "2.6"
+hex = "0.4"
+tokio = { version = "1", features = ["time"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full", "test-util"] }
+wiremock = "0.6"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
